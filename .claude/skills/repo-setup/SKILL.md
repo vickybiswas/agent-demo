@@ -132,7 +132,12 @@ Auto-formatting on file creation:
 
 ## Parallelization Strategy
 
-**CRITICAL**: All generated CLAUDE.md files must include parallelization guidance to prevent slow sequential execution.
+**CRITICAL**: All generated CLAUDE.md files must include parallelization guidance to prevent slow sequential execution and context bloat.
+
+### Why Parallelization Matters
+1. **Performance**: Independent tasks execute simultaneously → 5-10x speedup
+2. **Context Management**: Each subagent gets fresh context window; outputs don't accumulate in main agent
+3. **Prevents Context Explosion**: Sequential operation outputs bloat context; parallel avoids this
 
 ### Phase-Level Parallelization
 - **Phase 1 & 2** (Frontend + Backend): Both spawn simultaneously, run in parallel
@@ -143,7 +148,21 @@ Auto-formatting on file creation:
 - **Frontend Testing**: TypeScript, build, Playwright → spawn all in parallel
 - **360° Testing** (Issue Resolution): Backend service, frontend service, CORS, integration, Docker → spawn all in parallel
 
-**Benefit**: Independent work executed in parallel cuts execution time 5-10x vs sequential.
+### Implementation Pattern
+```
+✅ Correct: Spawn multiple subagents in single message
+/Agent task-1 (background)
+/Agent task-2 (background)
+/Agent task-3 (background)
+# Main agent continues; subagents run in parallel
+
+❌ Incorrect: Sequential subagent spawning
+/Agent task-1        (wait for completion)
+/Agent task-2        (wait for completion)
+/Agent task-3        (wait for completion, bloats context)
+```
+
+**Benefits**: 5-10x faster, context stays manageable, main agent stays responsive.
 
 ## Execution
 

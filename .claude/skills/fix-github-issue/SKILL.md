@@ -75,15 +75,18 @@ Automated issue resolution with complete application testing before any changes.
 
 **CRITICAL**: Test the entire application stack to find the ACTUAL problem.
 
-**PERFORMANCE**: All testing below is INDEPENDENT → spawn all test tasks in parallel for 5-10x speedup.
+**PERFORMANCE & CONTEXT**: All testing below is INDEPENDENT → spawn all test tasks in parallel for:
+- **5-10x speedup** (parallel vs sequential execution)
+- **Context management** (each subagent gets fresh context, outputs don't accumulate)
+- **Main agent stays responsive** (continues analysis while tests run)
 
 ```
-Spawn in parallel:
-- Backend service test
-- Frontend service test
-- CORS header test
-- Integration test
-- Docker test
+Spawn in parallel in SINGLE message:
+- Backend service test (independent)
+- Frontend service test (independent)
+- CORS header test (independent)
+- Integration test (independent)
+- Docker test (independent)
 
 Collect results when all complete (NOT sequentially).
 ```
