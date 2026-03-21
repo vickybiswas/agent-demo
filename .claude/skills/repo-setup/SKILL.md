@@ -1,6 +1,6 @@
 ---
 name: repo-setup
-description: Generate complete Claude-orchestrated project setup from INSTRUCTIONS.md. Creates agents, skills, hooks, and domain guides automatically. Use when you have a project specification in INSTRUCTIONS.md format and need to generate the full repository infrastructure (agents, validators, orchestration guides, domain-specific CLAUDE.md files). Outputs reproducible, DRY-compliant setup with no manual file creation needed.
+description: Generate complete Claude-orchestrated project setup from INSTRUCTIONS.md. Creates agents, skills, hooks, /commands, and domain guides automatically. Use when you have a project specification in INSTRUCTIONS.md format and need to generate the full repository infrastructure (agents, validators, skills, hooks, /commands, orchestration guides, domain-specific CLAUDE.md files). Outputs reproducible, DRY-compliant setup with no manual file creation needed.
 ---
 
 # Repo Setup Skill - Automated Infrastructure Generation
@@ -11,6 +11,7 @@ Transform a project INSTRUCTIONS.md into a complete, production-ready repository
 - Automated code formatting hooks
 - 5 specialized agents
 - 3 domain-specific validators (skills)
+- issue fetch and solve command
 - Orchestration guides (CLAUDE.md files)
 - Docker integration guide
 
@@ -49,7 +50,7 @@ Orchestration (Docker):
 - Requirements: Service networking, no localhost hardcoding
 ```
 
-## What Gets Generated
+## What Gets Generated (use subagents and paralliize as much as possible)
 
 ### 1. Hooks Configuration (`.claude/settings.local.json`)
 Auto-formatting on file creation:
@@ -97,7 +98,7 @@ Auto-formatting on file creation:
 - Health check verification commands
 - CORS troubleshooting section
 
-### 5. Domain Guides
+### 5. Domain Guides 
 
 **frontend/CLAUDE.md** (7 phases):
 - Phase 1: Setup (project init, dependencies)
@@ -273,7 +274,8 @@ Domain guides:
 - **CRITICAL**: No coordination needed between agents → enables parallel execution
 - Frontend + Backend agents MUST spawn together (not sequentially)
 - Within each phase, independent tasks (tests, validations) spawn together
-- **Result**: 5-10x speedup from parallelization vs sequential execution
+- ALWAYS use SubAgents where possible and wnsure the Claude file and CREATE.ms you create propose the same for max parallization
+- **Result**: 5-10x speedup from parallelization vs sequential execution recommended in all CLAUDE.md files
 
 ## Framework Focus
 
@@ -330,7 +332,7 @@ All three spawn together, results collected when done.
 - Backend service startup
 - Frontend service startup
 - CORS header validation
-- End-to-end operation
+- End-to-end operation - Playwrite
 - Docker Compose startup
 All spawn together in single message.
 
@@ -347,9 +349,9 @@ Do NOT spawn sequentially (wait for each to complete).
 - Requirements: Stranger Things theme, zero external deps, 100% test coverage
 
 **Output**: Complete 13-file setup ready for agent execution via `claude build`
-- Includes parallelization guidance in generated CLAUDE.md
+- Includes subagents and parallelization guidance in generated CLAUDE.md
 - Frontend & Backend agents spawn together
-- All testing phases use parallel execution patterns
+- All testing phases use parallel execution patterns with thrrough testing
 
 ## Integration Testing Prevention
 
