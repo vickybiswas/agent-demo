@@ -44,7 +44,7 @@ I wish to create a themed basic calculator where react nextjs frontend and pytho
     * /multiply?num1=xxx&num2=yyy
     * /divide?num1=xxx&num2=yyy
 * Create Frontend
-    * Create a typescript NextJS SPA with a landing page mimicing a Basic calculator functionality with C M etc baked in. It would be themed based on. the TV show Stranger Things,  and contain animations, button interactions, background and sound effects. The site should be entirely SCSS and Json driven. No images. Use libraries like framer-motion, shadcn/ui, lucide-react, three.js etc.
+    * Create a typescript NextJS SPA with a landing page mimicing a Basic calculator functionality with C M etc baked in. It would be themed based on. the TV show Stranger Things,  and contain animations, button interactions, background and sound effects. The site should be entirely SCSS and Json driven. No images. Use libraries like framer-motion, shadcn/ui, lucide-react, three.js etc. Ensure the calculator is HIGHLY animated, responsive, and engaging - use innovative Ideas. 
     * Test
         * Do UI testing using Playwright and review code for best practices.
         * Split above instructions into a checklist and validate the code against it. 
