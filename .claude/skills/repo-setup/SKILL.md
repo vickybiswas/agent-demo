@@ -180,16 +180,19 @@ As repo-setup specialist, analyze INSTRUCTIONS.md and generate complete repo set
 2. Generate .claude/settings.local.json (hooks)
 3. Generate 5 agent files (.claude/agents/)
 4. Generate 3 skill validators (.claude/skills/*/SKILL.md)
-5. Generate CLAUDE.md (root orchestration)
+5. Generate CLAUDE.md (root orchestration + PARALLELIZATION STRATEGY section)
 6. Generate CREATE.md (Docker phases)
 7. Generate REGRESSION.md (pre-PR checklist - REQUIRED before any PR)
 8. Generate STARTUP.md (service startup guide with env var documentation)
-9. Generate frontend/CLAUDE.md (7-phase guide with CORS/env testing)
-10. Generate backend/CLAUDE.md (8-phase guide with CORS middleware)
+9. Generate frontend/CLAUDE.md (7-phase guide with CORS/env testing + parallelization guidance)
+10. Generate backend/CLAUDE.md (8-phase guide with CORS middleware + parallelization guidance)
 11. Generate .env.example and .env.local.example (with documentation)
 12. Generate .github/pull_request_template.md (links to REGRESSION.md)
 
-Output all files with proper formatting and structure. REGRESSION.md is critical for preventing integration issues from reaching GitHub.
+CRITICAL: CLAUDE.md MUST include "Parallelization Strategy" section (see template below).
+Every generated CLAUDE.md shows HOW to parallelize Phase 1 & 2, and within testing phases.
+
+Output all files with proper formatting and structure.
 ```
 
 ### Step 3: Verify Generation
@@ -291,6 +294,51 @@ Generated setup enforces:
 
 No phase advances without skill validation.
 
+## Parallelization Template (Generate in CLAUDE.md)
+
+Every generated CLAUDE.md MUST include this section:
+
+```markdown
+## Parallelization Strategy
+
+**Performance & Context Management**: Spawn independent tasks in parallel to:
+- Execute 5-10x faster (parallel vs sequential)
+- Keep context manageable (each subagent gets fresh context, outputs don't accumulate)
+- Keep main agent responsive (continues work while subagents run)
+
+### Phase 1 & 2: Parallel Execution
+Frontend + Backend agents MUST spawn together in SAME message:
+- Frontend agent: reads frontend/CLAUDE.md (7 phases)
+- Backend agent: reads backend/CLAUDE.md (8 phases)
+- Both execute independently, in parallel
+
+### Within Each Phase: Parallel Testing
+Independent tasks spawn together (NOT sequentially):
+
+**Backend Testing Phase**:
+- Unit tests (all together)
+- API tests (all together)
+- Coverage analysis (runs after both complete)
+
+**Frontend Testing Phase**:
+- TypeScript validation
+- Build compilation
+- Playwright tests
+All three spawn together, results collected when done.
+
+**360° Regression Testing** (Issue Resolution):
+- Backend service startup
+- Frontend service startup
+- CORS header validation
+- End-to-end operation
+- Docker Compose startup
+All spawn together in single message.
+
+### Implementation Rule
+Spawn independent tasks in SINGLE message with `run_in_background=true`.
+Do NOT spawn sequentially (wait for each to complete).
+```
+
 ## Example
 
 **Input**: INSTRUCTIONS.md with:
@@ -299,6 +347,9 @@ No phase advances without skill validation.
 - Requirements: Stranger Things theme, zero external deps, 100% test coverage
 
 **Output**: Complete 13-file setup ready for agent execution via `claude build`
+- Includes parallelization guidance in generated CLAUDE.md
+- Frontend & Backend agents spawn together
+- All testing phases use parallel execution patterns
 
 ## Integration Testing Prevention
 
