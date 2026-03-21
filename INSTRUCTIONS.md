@@ -17,6 +17,8 @@ We will create a Stranger Things Calculator running on docker
     * github
         * claude mcp add-json github '{"type":"http","url":"https://api.githubcopilot.com/mcp","headers":{"Authorization":"Bearer '"$(grep GITHUB_PAT .env | cut -d '=' -f2)"'"}}'
 * skill
+    * (installed already) repo-setup - ./claude/skills/repo-setup/SKILL.md
+    * (installed already) fix-github-issue - ./claude/skills/fix-github-issue/SKILL.md    
     * nextjs-validator - ./claude/skills/nextjs-validator/SKILL.md
     * fastapi-validator - ./claude/skills/fastapi-validator/SKILL.md
     * docker-validator - ./claude/skills/docker-validator/SKILL.md
@@ -29,8 +31,6 @@ We will create a Stranger Things Calculator running on docker
     * React NextJS Specialist
     * DevOps Specialist
     * QA Automation Specialist
-* command
-    * /fix-next - Pick next Issue from github and fix it and create a PR
 * Directions
     * CLAUDE.md
     * frontend/CLAUDE.md
