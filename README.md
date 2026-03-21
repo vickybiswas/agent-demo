@@ -4,13 +4,12 @@
 I established that different agents can be used to do different tasks where developers can steer using the right spec and get the job done.
 Link to the last post: [Build a Full-stack Multi-tech app using Agents, start Problem Engineering](https://www.linkedin.com/posts/vickybiswas_experience-for-yourself-and-let-me-know-how-activity-7431746932739559424-sU-I)
 The post showed different agents to establish the strengths for various players in the development team by doing things hands on.
-You however were introduced to multiple tools for the hands on experience.
-Today let's use one central tool thaa ruuns multiple agents to build a frontend (simple HTML/CSS/JS) and backend (python docker).
+You however were working with multiple tools for the hands on experience. That was designed to show their strengths.
+Today let's use one central tool that runs multiple subagents to build a frontend (simple HTML/CSS/JS) and backend (python docker).
 
 ## Running all from one command line
-
-I talked about High-level outcome, Constraining details, and Validation methods in my last post.
-We will directlly push High-level outcome as our instruction.
+I talked last time about about High-level outcome, Constraining details, and Validation methods in my last post.
+We will directlly push High-level outcome as our instructions.
 We will put Constraining details as our config.
 We will create Validation methods as our skills.
 
@@ -31,13 +30,13 @@ We will create a Stranger Things Calculator
     * python
 
 ### Setup
-Use google account to login to github and create an empty repo
-https://github.com/vickybiswas/agent-demo
-Signup for openrouter https://openrouter.ai./ using your google account
-Setup claude code - https://github.com/anthropics/claude-code
-* curl -fsSL https://claude.ai/install.sh | bash
-* setup openrouter in claude code - 
-Enhance Claude Code
+* Login to github and clone the main branch of this repo https://github.com/vickybiswas/agent-demo
+* create a .env file with -> GITHUB_PAT=your-github-pat (create in Githuv > Settings > Developer > Personal access tokens)
+* Signup for openrouter https://openrouter.ai./ for free LLM access. Create a Key.
+* Setup claude code - https://github.com/anthropics/claude-code
+* Install claude cli ->  curl -fsSL https://claude.ai/install.sh | bash
+* create setup openrouter in claude code - 
+Automatically setup Claude Code for rep
 * claude plugin install @anthropic/[plugin-name](https://github.com/anthropics/claude-code/blob/main/plugins/README.md)
     * frontend-design
     * pr-review-toolkit

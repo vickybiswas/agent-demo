@@ -1,0 +1,24 @@
+{
+  "name": "Stranger Things",
+  "colors": {
+    "primary": "#ff0000",
+    "secondary": "#00ff00",
+    "dark": "#000000",
+    "accent": "#ffff00",
+    "neon": "#00ffff",
+    "purple": "#8b00ff"
+  },
+  "fonts": {
+    "heading": "Arial Black",
+    "body": "Arial"
+  },
+  "effects": {
+    "glitch": true,
+    "neon": true,
+    "scanlines": true
+  },
+  "animations": {
+    "buttonHoverDuration": 0.3,
+    "screenFlashDuration": 0.5
+  }
+}

@@ -1,0 +1,93 @@
+// SCSS variables and mixins (without reset/global styles)
+$color-primary: #ff0000;
+$color-secondary: #00ff00;
+$color-dark: #000000;
+$color-accent: #ffff00;
+$color-neon: #00ffff;
+
+@mixin neon-glow($color) {
+  text-shadow: 0 0 10px $color, 0 0 20px $color, 0 0 30px $color;
+}
+
+@mixin scanlines {
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+}
+
+@keyframes neon-pulse {
+  0%, 100% {
+    text-shadow: 0 0 10px $color-secondary;
+  }
+  50% {
+    text-shadow: 0 0 20px $color-secondary, 0 0 30px $color-secondary;
+  }
+}
+
+@keyframes screen-flicker {
+  0%, 100% {
+    opacity: 1;
+  }
+  5% {
+    opacity: 0.95;
+  }
+  10% {
+    opacity: 1;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  20% {
+    opacity: 1;
+  }
+}
+
+.displayContainer {
+  width: 100%;
+  padding: 20px;
+  background-color: #1a1a1a;
+  border: 3px solid $color-primary;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 20px $color-primary;
+  @include scanlines;
+
+  &:focus-within {
+    animation: screen-flicker 0.3s ease-in-out;
+  }
+}
+
+.inputLine {
+  font-family: 'Courier New', monospace;
+  font-size: 2rem;
+  color: $color-primary;
+  @include neon-glow($color-primary);
+  text-align: right;
+  word-wrap: break-word;
+  word-break: break-all;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.resultLine {
+  font-family: 'Courier New', monospace;
+  font-size: 1.5rem;
+  color: $color-secondary;
+  @include neon-glow($color-secondary);
+  text-align: right;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  &:not(:empty) {
+    animation: neon-pulse 1s ease-in-out infinite;
+  }
+}

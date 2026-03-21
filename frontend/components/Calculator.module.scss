@@ -1,0 +1,188 @@
+// SCSS variables and mixins (without reset/global styles)
+$color-primary: #ff0000;
+$color-secondary: #00ff00;
+$color-dark: #000000;
+$color-accent: #ffff00;
+$font-heading: 'Arial Black', sans-serif;
+
+$bp-tablet: 768px;
+$bp-mobile: 320px;
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin scanlines {
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+}
+
+@mixin neon-glow($color) {
+  text-shadow: 0 0 10px $color, 0 0 20px $color, 0 0 30px $color;
+}
+
+@keyframes background-pulse {
+  0%, 100% {
+    background-color: $color-dark;
+  }
+  50% {
+    background-color: rgba($color-primary, 0.1);
+  }
+}
+
+@keyframes glitch-text {
+  0%, 100% {
+    text-shadow: 0 0 10px $color-primary;
+    clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+  }
+  20% {
+    text-shadow: 0 0 20px $color-secondary;
+    clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
+  }
+  40% {
+    text-shadow: 0 0 15px #00ffff;
+    clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+  }
+  100% {
+    text-shadow: 0 0 10px $color-primary;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+}
+
+.calculatorWrapper {
+  width: 100%;
+  height: 100vh;
+  @include flex-center;
+  background: radial-gradient(circle, rgba(139, 0, 255, 0.1), $color-dark);
+  padding: 20px;
+  animation: background-pulse 8s ease-in-out infinite;
+}
+
+.calculator {
+  width: 100%;
+  max-width: 450px;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 30px;
+  border: 4px solid $color-primary;
+  border-radius: 12px;
+  box-shadow: 0 0 50px $color-primary, 0 0 100px rgba(139, 0, 255, 0.5);
+  @include scanlines;
+}
+
+.title {
+  font-family: $font-heading;
+  font-size: 1.8rem;
+  color: $color-primary;
+  text-align: center;
+  margin-bottom: 5px;
+  letter-spacing: 3px;
+  animation: glitch-text 0.6s ease-in-out infinite;
+}
+
+.subtitle {
+  font-family: $font-heading;
+  font-size: 1.2rem;
+  color: $color-secondary;
+  text-align: center;
+  margin-bottom: 25px;
+  letter-spacing: 2px;
+  @include neon-glow($color-secondary);
+}
+
+.buttonGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  @media (max-width: $bp-tablet) {
+    gap: 8px;
+  }
+
+  @media (max-width: $bp-mobile) {
+    gap: 6px;
+  }
+}
+
+.scientificSection {
+  border-top: 2px solid rgba($color-primary, 0.5);
+  padding-top: 15px;
+  margin-top: 10px;
+}
+
+.sectionTitle {
+  font-family: $font-heading;
+  font-size: 0.9rem;
+  color: #ff00ff;
+  text-align: center;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+  text-shadow: 0 0 5px #ff00ff;
+}
+
+.scientificGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+
+  @media (max-width: $bp-tablet) {
+    gap: 8px;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media (max-width: $bp-mobile) {
+    gap: 6px;
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: $bp-tablet) {
+  .calculator {
+    max-width: 100%;
+    padding: 20px;
+    border-width: 3px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .sectionTitle {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: $bp-mobile) {
+  .calculatorWrapper {
+    padding: 10px;
+  }
+
+  .calculator {
+    max-width: 100%;
+    padding: 15px;
+    border-width: 2px;
+  }
+
+  .title {
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+  }
+}

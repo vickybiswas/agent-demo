@@ -30,8 +30,9 @@ Transform a project INSTRUCTIONS.md into a complete, production-ready repository
 ```
 # Project structure (Frontend/Backend/Orchestration)
 - Agents: 5+ agent names
-- Stack: Technology choices (frameworks, languages, ports)
+- Stack: Technology choices (frameworks, languages, ports) always the letest version unless there is a version conflict in which case nearest stable version
 - Requirements: Frontend, Backend, and Docker-specific needs
+- execution should never happen on local ALWAYS on docker containers
 ```
 
 **Example INSTRUCTIONS.md sections:**
@@ -74,21 +75,22 @@ Auto-formatting on file creation:
 
 **CLAUDE.md** (Root orchestration):
 - 3 STEPs to spawn agents in parallel (Frontend + Backend) then sequential (Docker)
+- Frontend and Backend should always execute in the contaoner and not on local
 - Quality gates for each domain
 - Dependencies and timing
 - Reference to REGRESSION.md as pre-PR requirement
 
 **CREATE.md** (Docker-specific guide):
-- Phase 1: Frontend Dockerfile (node:18-alpine)
-- Phase 2: Backend Dockerfile (python:3.11-slim)
-- Phase 3: docker-compose.yaml (service networking, hot-reload volumes)
+- Phase 1: Frontend Dockerfile (node:22-alpine)
+- Phase 2: Backend Dockerfile (python:3.13-slim)
+- Phase 3: docker-compose.yaml (service networking, code volume mounts, hot-reload nextjs and fastapi)
 - Phase 4: Integration testing (service communication, environment variables)
 
 **REGRESSION.md** (Pre-PR quality gate):
 - Phase 1: Local dev setup (backend, frontend, environment variables)
 - Phase 2: CORS & integration testing (verify frontend ↔ backend communication)
 - Phase 3: Testing requirements (unit, API, e2e tests per CLAUDE.md phases)
-- Phase 4: Docker orchestration (docker compose verification)
+- Phase 4: Docker orchestration (docker compose verification) Frontend and backend communication
 - Phase 5: Code quality (PEP8, docstrings, type hints)
 - Phase 6: Git & PR preparation (clean commits, no debug code)
 
@@ -398,3 +400,7 @@ All independent → spawn together, not sequentially. Cuts regression testing ti
 - Generated agents are ready to spawn immediately
 - No manual editing needed unless customizing beyond INSTRUCTIONS.md
 - **REGRESSION.md is mandatory** - Every developer must complete it before creating a PR
+
+
+21 Nov -
+NOTE: use localhost:port for frontend to backend connection not container names
