@@ -1,0 +1,86 @@
+// Theme SCSS Variables loaded from theme.json
+// Colors
+$color-background: #0a0e27;
+$color-surface: #1a1f3a;
+$color-primary: #ff006e;
+$color-secondary: #00f5ff;
+$color-accent: #ffbe0b;
+$color-text: #ffffff;
+$color-text-secondary: #b0b5c8;
+$color-success: #39ff14;
+$color-error: #ff006e;
+$color-warning: #ffbe0b;
+
+// Typography
+$font-family: 'Press Start 2P', 'Courier New', monospace;
+$font-family-secondary: 'Arial', sans-serif;
+$font-size-base: 16px;
+
+// Spacing (8px unit system)
+$space-xs: 4px;
+$space-sm: 8px;
+$space-md: 16px;
+$space-lg: 24px;
+$space-xl: 32px;
+
+// Border
+$border-radius: 2px;
+$border-width: 2px;
+
+// Shadows with neon glow effects
+$shadow-sm: 0 0 10px rgba(255, 0, 110, 0.3);
+$shadow-md: 0 0 20px rgba(0, 245, 255, 0.3);
+$shadow-lg: 0 0 40px rgba(255, 190, 11, 0.2);
+
+// Breakpoints for responsive design
+$breakpoint-mobile: 320px;
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 1024px;
+$breakpoint-wide: 1920px;
+
+// Mixins for responsive design
+@mixin mobile {
+  @media (max-width: $breakpoint-tablet - 1px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: $breakpoint-tablet) and (max-width: $breakpoint-desktop - 1px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: $breakpoint-desktop) and (max-width: $breakpoint-wide - 1px) {
+    @content;
+  }
+}
+
+@mixin wide {
+  @media (min-width: $breakpoint-wide) {
+    @content;
+  }
+}
+
+@mixin medium-and-up {
+  @media (min-width: $breakpoint-tablet) {
+    @content;
+  }
+}
+
+// Glow effect mixin
+@mixin glow($color: $color-primary) {
+  box-shadow: 0 0 10px $color, 0 0 20px $color, inset 0 0 10px rgba($color, 0.3);
+}
+
+// Text glow mixin
+@mixin text-glow($color: $color-primary) {
+  text-shadow: 0 0 10px $color, 0 0 20px $color, 0 0 30px $color;
+}
+
+// Neon border mixin
+@mixin neon-border($color: $color-primary) {
+  border: $border-width solid $color;
+  box-shadow: 0 0 10px $color, inset 0 0 10px rgba($color, 0.2);
+}

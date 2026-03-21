@@ -1,0 +1,49 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: calculator-backend
+    ports:
+      - "8004:8004"
+    environment:
+      - API_PORT=8004
+      - NODE_ENV=development
+    volumes:
+      - ./backend:/app
+      - /app/__pycache__
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8004/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: calculator-frontend
+    ports:
+      - "3004:3004"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8004
+      - NODE_ENV=development
+    volumes:
+      - ./frontend:/app
+      - frontend-node_modules:/app/node_modules
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3004"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  frontend-node_modules:
+
+networks:
+  default:
+    name: calculator-network
+    driver: bridge

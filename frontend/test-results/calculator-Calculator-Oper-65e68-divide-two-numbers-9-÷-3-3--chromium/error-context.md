@@ -1,0 +1,61 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e4]:
+    - generic [ref=e5]:
+      - heading "CALCULATOR" [level=1] [ref=e6]
+      - paragraph [ref=e7]: STRANGER THINGS EDITION
+    - generic [ref=e9]: "0"
+    - generic [ref=e10]: Connection failed. Please check your internet connection.
+    - generic [ref=e11]:
+      - button "Memory Clear" [ref=e12] [cursor=pointer]:
+        - generic [ref=e13]: MC
+      - button "Memory Recall" [ref=e14] [cursor=pointer]:
+        - generic [ref=e15]: MR
+      - button "Memory Add" [ref=e16] [cursor=pointer]:
+        - generic [ref=e17]: M+
+      - button "Memory Subtract" [ref=e18] [cursor=pointer]:
+        - generic [ref=e19]: M-
+      - button "Clear" [ref=e20] [cursor=pointer]:
+        - generic [ref=e21]: C
+      - button "All Clear" [ref=e22] [cursor=pointer]:
+        - generic [ref=e23]: AC
+      - button "Divide" [ref=e24] [cursor=pointer]:
+        - generic [ref=e25]: ÷
+      - button "Multiply" [ref=e26] [cursor=pointer]:
+        - generic [ref=e27]: ×
+      - button "7" [ref=e28] [cursor=pointer]:
+        - generic [ref=e29]: "7"
+      - button "8" [ref=e30] [cursor=pointer]:
+        - generic [ref=e31]: "8"
+      - button "9" [ref=e32] [cursor=pointer]:
+        - generic [ref=e33]: "9"
+      - button "Subtract" [ref=e34] [cursor=pointer]:
+        - generic [ref=e35]: "-"
+      - button "4" [ref=e36] [cursor=pointer]:
+        - generic [ref=e37]: "4"
+      - button "5" [ref=e38] [cursor=pointer]:
+        - generic [ref=e39]: "5"
+      - button "6" [ref=e40] [cursor=pointer]:
+        - generic [ref=e41]: "6"
+      - button "Add" [ref=e42] [cursor=pointer]:
+        - generic [ref=e43]: +
+      - button "1" [ref=e44] [cursor=pointer]:
+        - generic [ref=e45]: "1"
+      - button "2" [ref=e46] [cursor=pointer]:
+        - generic [ref=e47]: "2"
+      - button "3" [ref=e48] [cursor=pointer]:
+        - generic [ref=e49]: "3"
+      - button "Equals" [ref=e50] [cursor=pointer]:
+        - generic [ref=e51]: =
+      - button "0" [ref=e52] [cursor=pointer]:
+        - generic [ref=e53]: "0"
+      - button "Decimal" [ref=e54] [cursor=pointer]:
+        - generic [ref=e55]: .
+      - button "Backspace" [ref=e56] [cursor=pointer]:
+        - generic [ref=e57]: ←
+  - button "Open Next.js Dev Tools" [ref=e63] [cursor=pointer]:
+    - img [ref=e64]
+  - alert [ref=e67]
+```
