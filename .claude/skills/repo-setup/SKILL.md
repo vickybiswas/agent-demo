@@ -1,6 +1,6 @@
 ---
 name: repo-setup
-description: Generate complete Claude-orchestrated project setup from INSTRUCTIONS.md. Creates agents, skills, hooks, /commands, and domain guides automatically. Use when you have a project specification in INSTRUCTIONS.md format and need to generate the full repository infrastructure (agents, validators, skills, hooks, /commands, orchestration guides, domain-specific CLAUDE.md files). Outputs reproducible, DRY-compliant setup with no manual file creation needed.
+description: Generate complete Claude-orchestrated project setup from INSTRUCTIONS.md. Creates agents, skills, hooks, and domain guides automatically. Use when you have a project specification in INSTRUCTIONS.md format and need to generate the full repository infrastructure (agents, validators, skills, hooks, orchestration guides, domain-specific CLAUDE.md files). Outputs reproducible, DRY-compliant setup with no manual file creation needed.
 ---
 
 # Repo Setup Skill - Automated Infrastructure Generation
@@ -65,7 +65,7 @@ Auto-formatting on file creation:
 4. `4-devops-specialist.md` - Docker orchestration expert
 5. `5-qa-specialist.md` - Testing and coverage expert
 
-### 3. Three Validators (`.claude/skills/*/SKILL.md`)
+### 3. Three Validators (`.claude/skills/*/SKILL.md` configured on run on every file update)
 1. **nextjs-validator** - TypeScript strict, SCSS organized, animations smooth, no images, Playwright ready
 2. **fastapi-validator** - PEP8, separate routes, zero external deps, 100% coverage, edge cases
 3. **docker-validator** - Dockerfiles, compose.yaml, ports, volumes, service networking
@@ -151,7 +151,7 @@ Auto-formatting on file creation:
 
 ### Implementation Pattern
 ```
-✅ Correct: Spawn multiple subagents in single message
+✅ Correct: Spawn multiple subagents (hiaku) in single message
 /Agent task-1 (background)
 /Agent task-2 (background)
 /Agent task-3 (background)
@@ -333,6 +333,7 @@ All three spawn together, results collected when done.
 - Frontend service startup
 - CORS header validation
 - End-to-end operation - Playwrite
+- Frontend should be reaching backend and e2e should be able to prove that by mimicing usage.
 - Docker Compose startup
 All spawn together in single message.
 
@@ -350,7 +351,7 @@ Do NOT spawn sequentially (wait for each to complete).
 
 **Output**: Complete 13-file setup ready for agent execution via `claude build`
 - Includes subagents and parallelization guidance in generated CLAUDE.md
-- Frontend & Backend agents spawn together
+- Frontend & Backend agents spawn together and front end can reach backend on browser
 - All testing phases use parallel execution patterns with thrrough testing
 
 ## Integration Testing Prevention
@@ -367,7 +368,7 @@ Without a pre-PR checklist, integration issues slip through to GitHub. Issue #3 
 - ✅ Developers test backend service starts (`python3 main.py`)
 - ✅ Developers test frontend service starts (`npm run dev`)
 - ✅ Developers test CORS headers sent correctly (`curl -H "Origin..." ...`)
-- ✅ Developers test end-to-end operation (5 + 3 = 8)
+- ✅ Developers test end-to-end operation (5 + 3 = 8) tested on browser UI to see frontend and backend working together
 - ✅ Developers test Docker Compose orchestration
 - ✅ All tests passing BEFORE creating PR
 
