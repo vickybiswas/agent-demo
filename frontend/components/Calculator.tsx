@@ -3,10 +3,12 @@
 import React, { useState, useCallback } from 'react';
 import { Button } from './Button';
 import { Display } from './Display';
-import { calculate, getErrorMessage } from '@/lib/api';
+import { calculate, scientificCalculate, getErrorMessage } from '@/lib/api';
 import { playSuccessSound, playErrorSound, playEqualsSound } from '@/lib/sound';
+import { motion } from 'framer-motion';
 
-type Operation = 'add' | 'subtract' | 'multiply' | 'divide' | null;
+type Operation = 'add' | 'subtract' | 'multiply' | 'divide' | 'power' | 'modulo' | null;
+type ScientificOperation = 'sin' | 'cos' | 'tan' | 'sqrt' | 'ln' | 'log' | 'abs' | 'factorial';
 
 interface CalculatorState {
   display: string;
@@ -29,6 +31,8 @@ export const Calculator: React.FC = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [scientificMode, setScientificMode] = useState(false);
+  const [angleMode, setAngleMode] = useState<'deg' | 'rad'>('deg');
 
   const updateDisplay = useCallback((newDisplay: string) => {
     setState((prev) => ({ ...prev, display: newDisplay }));
@@ -229,12 +233,69 @@ export const Calculator: React.FC = () => {
     });
   }, []);
 
+  const handleScientificOperation = useCallback(
+    async (op: ScientificOperation) => {
+      setError(null);
+      setIsLoading(true);
+
+      try {
+        const inputValue = parseFloat(state.display);
+        const result = await scientificCalculate(
+          op,
+          inputValue,
+          angleMode === 'deg' && ['sin', 'cos', 'tan'].includes(op)
+        );
+
+        playEqualsSound();
+        playSuccessSound();
+
+        setState((prev) => ({
+          ...prev,
+          display: String(result),
+          firstNumber: null,
+          operation: null,
+          waitingForOperand: true,
+        }));
+      } catch (err) {
+        playErrorSound();
+        const errorMessage = getErrorMessage(err);
+        setError(errorMessage);
+        setState((prev) => ({
+          ...prev,
+          display: '0',
+          firstNumber: null,
+          operation: null,
+          waitingForOperand: true,
+        }));
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [state.display, angleMode]
+  );
+
+  const handleConstant = useCallback((value: number) => {
+    setState((prev) => ({
+      ...prev,
+      display: String(value),
+      waitingForOperand: true,
+    }));
+  }, []);
+
   return (
     <div className="calculator-wrapper">
       <div className="calculator">
         <div className="calculator-header">
           <h1>CALCULATOR</h1>
           <p>STRANGER THINGS EDITION</p>
+          <motion.button
+            className={`scientific-toggle ${scientificMode ? 'active' : ''}`}
+            onClick={() => setScientificMode(!scientificMode)}
+            whileTap={{ scale: 0.95 }}
+            data-testid="scientific-toggle"
+          >
+            {scientificMode ? 'BASIC' : 'SCIENTIFIC'}
+          </motion.button>
         </div>
 
         <Display value={state.display} memory={state.memory} isError={!!error} />
@@ -245,7 +306,7 @@ export const Calculator: React.FC = () => {
           </div>
         )}
 
-        <div className="buttons-grid">
+        <div className={`buttons-grid ${scientificMode ? 'scientific' : 'basic'}`}>
           {/* Row 1: Memory Operations */}
           <Button
             label="MC"
@@ -425,6 +486,120 @@ export const Calculator: React.FC = () => {
             disabled={isLoading}
             ariaLabel="Backspace"
           />
+
+          {/* Scientific Mode Buttons */}
+          {scientificMode && (
+            <>
+              {/* Row 7: Trigonometric Functions */}
+              <Button
+                label="sin"
+                onClick={() => handleScientificOperation('sin')}
+                className="scientific"
+                testId="sin"
+                disabled={isLoading}
+                ariaLabel="Sine"
+              />
+              <Button
+                label="cos"
+                onClick={() => handleScientificOperation('cos')}
+                className="scientific"
+                testId="cos"
+                disabled={isLoading}
+                ariaLabel="Cosine"
+              />
+              <Button
+                label="tan"
+                onClick={() => handleScientificOperation('tan')}
+                className="scientific"
+                testId="tan"
+                disabled={isLoading}
+                ariaLabel="Tangent"
+              />
+              <Button
+                label={angleMode === 'deg' ? 'RAD' : 'DEG'}
+                onClick={() => setAngleMode(angleMode === 'deg' ? 'rad' : 'deg')}
+                className="scientific"
+                testId="angle-mode"
+                ariaLabel="Toggle Angle Mode"
+              />
+
+              {/* Row 8: Logarithmic Functions */}
+              <Button
+                label="ln"
+                onClick={() => handleScientificOperation('ln')}
+                className="scientific"
+                testId="ln"
+                disabled={isLoading}
+                ariaLabel="Natural Logarithm"
+              />
+              <Button
+                label="log"
+                onClick={() => handleScientificOperation('log')}
+                className="scientific"
+                testId="log"
+                disabled={isLoading}
+                ariaLabel="Logarithm Base 10"
+              />
+              <Button
+                label="√"
+                onClick={() => handleScientificOperation('sqrt')}
+                className="scientific"
+                testId="sqrt"
+                disabled={isLoading}
+                ariaLabel="Square Root"
+              />
+              <Button
+                label="π"
+                onClick={() => handleConstant(Math.PI)}
+                className="scientific"
+                testId="pi"
+                ariaLabel="Pi"
+              />
+
+              {/* Row 9: Additional Functions */}
+              <Button
+                label="x^y"
+                onClick={() => handleOperation('power')}
+                className="operation"
+                testId="power"
+                disabled={isLoading}
+                ariaLabel="Power"
+              />
+              <Button
+                label="!"
+                onClick={() => handleScientificOperation('factorial')}
+                className="scientific"
+                testId="factorial"
+                disabled={isLoading}
+                ariaLabel="Factorial"
+              />
+              <Button
+                label="|x|"
+                onClick={() => handleScientificOperation('abs')}
+                className="scientific"
+                testId="abs"
+                disabled={isLoading}
+                ariaLabel="Absolute Value"
+              />
+              <Button
+                label="e"
+                onClick={() => handleConstant(Math.E)}
+                className="scientific"
+                testId="e"
+                ariaLabel="Euler's Number"
+              />
+
+              {/* Row 10: Modulo */}
+              <Button
+                label="mod"
+                onClick={() => handleOperation('modulo')}
+                className="operation"
+                testId="modulo"
+                disabled={isLoading}
+                ariaLabel="Modulo"
+              />
+            </>
+          )}
         </div>
       </div>
     </div>

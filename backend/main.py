@@ -2,7 +2,10 @@
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes import add, subtract, multiply, divide
+from routes import (
+    add, subtract, multiply, divide,
+    sin, cos, tan, sqrt, ln, log, power, factorial, abs, modulo
+)
 
 app = FastAPI(
     title="Stranger Things Calculator",
@@ -36,6 +39,18 @@ app.include_router(add.router)
 app.include_router(subtract.router)
 app.include_router(multiply.router)
 app.include_router(divide.router)
+
+# Scientific operations
+app.include_router(sin.router)
+app.include_router(cos.router)
+app.include_router(tan.router)
+app.include_router(sqrt.router)
+app.include_router(ln.router)
+app.include_router(log.router)
+app.include_router(power.router)
+app.include_router(factorial.router)
+app.include_router(abs.router)
+app.include_router(modulo.router)
 
 
 @app.get("/", tags=["Root"])
