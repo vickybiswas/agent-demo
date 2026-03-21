@@ -111,8 +111,22 @@ Project: Full-stack calculator app with React NextJS frontend and Python FastAPI
 5. **Gate**: Docker validator passes
 6. **Final Validation**: QA Specialist verifies end-to-end
 
+## Before Creating Any PR
+
+**CRITICAL**: Complete the `REGRESSION.md` checklist BEFORE pushing any code:
+- [ ] Local dev: backend + frontend working
+- [ ] Integration: CORS working, frontend↔backend communication verified
+- [ ] Tests: All unit, API, and Playwright tests passing
+- [ ] Docker: Services running and communicating
+- [ ] Code quality: Typed, documented, linted
+
+This prevents integration issues (like #3) from reaching GitHub.
+
+See `REGRESSION.md` for the complete checklist.
+
 ## Notes
 - DRY Principle: Each phase documented in its own file (no duplication)
 - Parallel Execution: Frontend & Backend develop independently
 - Quality Gates: Validators block merge if not passing
 - No manual file creation: All infrastructure auto-generated
+- **Pre-PR Checklist**: `REGRESSION.md` must be completed before ANY PR
