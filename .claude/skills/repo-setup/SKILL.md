@@ -75,33 +75,60 @@ Auto-formatting on file creation:
 - 3 STEPs to spawn agents in parallel (Frontend + Backend) then sequential (Docker)
 - Quality gates for each domain
 - Dependencies and timing
+- Reference to REGRESSION.md as pre-PR requirement
 
 **CREATE.md** (Docker-specific guide):
 - Phase 1: Frontend Dockerfile (node:18-alpine)
 - Phase 2: Backend Dockerfile (python:3.11-slim)
 - Phase 3: docker-compose.yaml (service networking, hot-reload volumes)
-- Phase 4: Integration testing
+- Phase 4: Integration testing (service communication, environment variables)
+
+**REGRESSION.md** (Pre-PR quality gate):
+- Phase 1: Local dev setup (backend, frontend, environment variables)
+- Phase 2: CORS & integration testing (verify frontend ↔ backend communication)
+- Phase 3: Testing requirements (unit, API, e2e tests per CLAUDE.md phases)
+- Phase 4: Docker orchestration (docker compose verification)
+- Phase 5: Code quality (PEP8, docstrings, type hints)
+- Phase 6: Git & PR preparation (clean commits, no debug code)
+
+**STARTUP.md** (Service startup guide):
+- 3 startup options (Docker Compose, local development, automated script)
+- Environment variable setup (.env vs .env.local documentation)
+- Health check verification commands
+- CORS troubleshooting section
 
 ### 5. Domain Guides
 
 **frontend/CLAUDE.md** (7 phases):
 - Phase 1: Setup (project init, dependencies)
-- Phase 2: Theme & Layout (JSON config, SCSS, Stranger Things aesthetic)
+- Phase 2: Theme & Layout (JSON config, SCSS aesthetic)
 - Phase 3: Core Component (calculator logic)
 - Phase 4: Animations (framer-motion, sounds, effects, 60fps)
-- Phase 5: Backend Integration (API calls to backend:8004)
+- Phase 5: Backend Integration (**NEW**: CORS testing with curl, env var validation, .env vs .env.local setup)
 - Phase 6: Testing (Playwright e2e tests)
 - Phase 7: Review (TypeScript strict, build succeeds, tests pass)
 
 **backend/CLAUDE.md** (8 phases):
 - Phase 1: Setup (structure, requirements.txt: fastapi, uvicorn ONLY)
-- Phase 2: Main App (FastAPI instance, CORS, /health endpoint)
-- Phase 3: Routes (add.py, subtract.py, multiply.py, divide.py - separate files)
+- Phase 2: Main App (FastAPI instance, CORS middleware with allowed origins, /health endpoint, **NEW**: CORS header validation)
+- Phase 3: Routes (separate files per operation)
 - Phase 4: Unit Tests (5+ per operation, edge cases)
 - Phase 5: API Tests (5+ per endpoint, HTTP validation)
 - Phase 6: Regression Suite (all tests + 100% coverage)
 - Phase 7: Code Quality (PEP8, docstrings, type hints)
 - Phase 8: Documentation (README, endpoint docs)
+
+### 6. Environment & PR Configuration
+
+**.env.example** and **.env.local.example** (with documentation):
+- Shows difference between .env (Docker) and .env.local (local dev)
+- Lists all required environment variables
+- Explains why each is needed (e.g., NEXT_PUBLIC_API_URL points to different URLs depending on environment)
+
+**GitHub PR Template** (.github/pull_request_template.md):
+- Links to REGRESSION.md
+- Checklist: All regression checks passed before this PR
+- Forces developers to verify locally before pushing
 
 ## Execution
 
@@ -121,10 +148,14 @@ As repo-setup specialist, analyze INSTRUCTIONS.md and generate complete repo set
 4. Generate 3 skill validators (.claude/skills/*/SKILL.md)
 5. Generate CLAUDE.md (root orchestration)
 6. Generate CREATE.md (Docker phases)
-7. Generate frontend/CLAUDE.md (7-phase guide)
-8. Generate backend/CLAUDE.md (8-phase guide)
+7. Generate REGRESSION.md (pre-PR checklist - REQUIRED before any PR)
+8. Generate STARTUP.md (service startup guide with env var documentation)
+9. Generate frontend/CLAUDE.md (7-phase guide with CORS/env testing)
+10. Generate backend/CLAUDE.md (8-phase guide with CORS middleware)
+11. Generate .env.example and .env.local.example (with documentation)
+12. Generate .github/pull_request_template.md (links to REGRESSION.md)
 
-Output all files with proper formatting and structure.
+Output all files with proper formatting and structure. REGRESSION.md is critical for preventing integration issues from reaching GitHub.
 ```
 
 ### Step 3: Verify Generation
@@ -167,10 +198,20 @@ This will spawn agents following the generated orchestration guides.
 │   ├── nextjs-validator/SKILL.md
 │   ├── fastapi-validator/SKILL.md
 │   └── docker-validator/SKILL.md
-├── CLAUDE.md                     (Root orchestration)
-├── CREATE.md                     (Docker guide)
-├── frontend/CLAUDE.md            (7 phases)
-└── backend/CLAUDE.md             (8 phases)
+
+Root directory:
+├── CLAUDE.md                     (Root orchestration + REGRESSION.md reference)
+├── CREATE.md                     (Docker guide with integration testing)
+├── REGRESSION.md                 (Pre-PR checklist - REQUIRED before any PR)
+├── STARTUP.md                    (Service startup guide)
+├── .env.example                  (Environment variables for Docker)
+├── .env.local.example            (Environment variables for local dev)
+├── .github/
+│   └── pull_request_template.md (Links to REGRESSION.md checklist)
+
+Domain guides:
+├── frontend/CLAUDE.md            (7 phases including CORS testing)
+└── backend/CLAUDE.md             (8 phases including CORS middleware validation)
 ```
 
 ## Key Principles Applied
@@ -222,9 +263,38 @@ No phase advances without skill validation.
 
 **Output**: Complete 13-file setup ready for agent execution via `claude build`
 
+## Integration Testing Prevention
+
+**Why REGRESSION.md is Critical:**
+
+Without a pre-PR checklist, integration issues slip through to GitHub. Issue #3 demonstrated how CORS and environment variable misconfigurations can be missed if developers don't test the entire stack locally:
+
+- ❌ **Before**: Backend responded, frontend loaded separately, but frontend→backend communication broke because CORS wasn't tested
+- ❌ **Before**: Env vars (.env vs .env.local) weren't documented, causing localhost:8004 vs docker http://backend:8004 mismatches
+- ❌ **Before**: No checklist existed to verify all components working together before PR
+
+**With REGRESSION.md:**
+- ✅ Developers test backend service starts (`python3 main.py`)
+- ✅ Developers test frontend service starts (`npm run dev`)
+- ✅ Developers test CORS headers sent correctly (`curl -H "Origin..." ...`)
+- ✅ Developers test end-to-end operation (5 + 3 = 8)
+- ✅ Developers test Docker Compose orchestration
+- ✅ All tests passing BEFORE creating PR
+
+**New Files Added to repo-setup:**
+1. **REGRESSION.md** - Forces regression testing before ANY PR
+2. **STARTUP.md** - Documents service startup and env var setup
+3. **Enhanced Phase 5 (Frontend)** - Tests CORS with curl, validates env vars
+4. **Enhanced Phase 2 (Backend)** - Tests CORS middleware with actual frontend origins
+5. **.env.example & .env.local.example** - Explains environment variable differences
+6. **PR template** - Checklist linking to REGRESSION.md
+
+**Result:** Integration issues are caught during development, not after PR submission.
+
 ## Notes
 
 - Skill outputs files to current working directory
 - All files are properly formatted (hooks auto-fix on creation)
 - Generated agents are ready to spawn immediately
 - No manual editing needed unless customizing beyond INSTRUCTIONS.md
+- **REGRESSION.md is mandatory** - Every developer must complete it before creating a PR
