@@ -130,14 +130,11 @@ This is just a small example of what can be done with agents. The possibilities 
 ### OpenRouter Free models are slower
 
 
-
-For Later
-Agent Orchestration
-Netwrok AI
-ip: Use git worktrees to run multiple Claude sessions in parallel.
-  When you have a multi-part setup like this, structure your prompt:                                                                                                                                                                                                      
-  1. What to read/analyze (the source docs)
-  2. What to create (detailed list with specific requirements)                                                                                                                                                                                                            
-  3. Where to put it (local vs global, which directories)     
-  4. Format/style preferences (lean vs detailed, no repetition, etc.)                                                                                                                                                                                                     
-  5. Success criteria (what done looks like)  
+### Guidance on giving further instructions in Claude
+This could lie in your md files or in your pronpt or distributed between the two as we did.
+* What to read/analyze (the source docs)
+* What to create (detailed list with specific requirements)
+* Where to put it (local vs global, which directories)
+* Format/style preferences (lean vs detailed, no repetition, etc.)
+* Success criteria (what done looks like)
+For better performance parallelize using git worktrees, subagents and further using agent teams.
