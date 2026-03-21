@@ -130,6 +130,21 @@ Auto-formatting on file creation:
 - Checklist: All regression checks passed before this PR
 - Forces developers to verify locally before pushing
 
+## Parallelization Strategy
+
+**CRITICAL**: All generated CLAUDE.md files must include parallelization guidance to prevent slow sequential execution.
+
+### Phase-Level Parallelization
+- **Phase 1 & 2** (Frontend + Backend): Both spawn simultaneously, run in parallel
+- **Phase 3** (Docker): Starts only after Phase 1 & 2 complete (sequential dependency)
+
+### Within-Phase Parallelization
+- **Backend Testing**: Unit tests, API tests, coverage → spawn all in parallel
+- **Frontend Testing**: TypeScript, build, Playwright → spawn all in parallel
+- **360° Testing** (Issue Resolution): Backend service, frontend service, CORS, integration, Docker → spawn all in parallel
+
+**Benefit**: Independent work executed in parallel cuts execution time 5-10x vs sequential.
+
 ## Execution
 
 ### Step 1: Provide INSTRUCTIONS.md
@@ -230,10 +245,13 @@ Domain guides:
   - backend/CLAUDE.md: 8 phases for backend only
   - CREATE.md: Docker phases only
 
-### Agent Autonomy
+### Agent Autonomy & Parallelization
 - Each agent reads ONE file (no cross-file jumps)
 - Domain files are self-contained
-- No coordination needed between agents (parallel execution)
+- **CRITICAL**: No coordination needed between agents → enables parallel execution
+- Frontend + Backend agents MUST spawn together (not sequentially)
+- Within each phase, independent tasks (tests, validations) spawn together
+- **Result**: 5-10x speedup from parallelization vs sequential execution
 
 ## Framework Focus
 
@@ -289,7 +307,16 @@ Without a pre-PR checklist, integration issues slip through to GitHub. Issue #3 
 5. **.env.example & .env.local.example** - Explains environment variable differences
 6. **PR template** - Checklist linking to REGRESSION.md
 
-**Result:** Integration issues are caught during development, not after PR submission.
+**Performance Note:** REGRESSION.md tests should spawn in PARALLEL:
+- Backend health check
+- Frontend asset loading
+- CORS validation
+- End-to-end operation
+- Docker Compose startup
+
+All independent → spawn together, not sequentially. Cuts regression testing time 5-10x.
+
+**Result:** Integration issues are caught during development, not after PR submission. Testing is fast.
 
 ## Notes
 
