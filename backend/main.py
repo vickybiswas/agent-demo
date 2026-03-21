@@ -9,10 +9,15 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Add CORS middleware
+# Add CORS middleware - allow both local dev and Docker network
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3004", "http://frontend:3004"],
+    allow_origins=[
+        "http://localhost:3004",      # Local development (frontend)
+        "http://frontend:3004",        # Docker network (frontend service)
+        "http://localhost:8004",       # Health checks from local
+        "http://0.0.0.0:3004",         # Alternative local binding
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
