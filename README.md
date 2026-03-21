@@ -36,11 +36,11 @@ We will create a Stranger Things Calculator
 * Setup claude code - https://github.com/anthropics/claude-code
 * Install claude cli ->  curl -fsSL https://claude.ai/install.sh | bash
 * create setup openrouter in claude code - 
-Automatically setup Claude Code for rep
+Automatically setup Claude Code for repeatable defaults
 * claude plugin install @anthropic/[plugin-name](https://github.com/anthropics/claude-code/blob/main/plugins/README.md)
-    * frontend-design
-    * pr-review-toolkit
-    * security-guidance
+    * frontend-design -> claude plugin install @anthropic/frontend-design
+    * pr-review-toolkit -> claude plugin install @anthropic/pr-review-toolkit
+    * security-guidance -> claude plugin install @anthropic/security-guidance
 * claude mcp - claude mcp list
     * code-review-graph
         * claude plugin marketplace add tirth8205/code-review-graph && claude plugin install code-review-graph@code-review-graph
@@ -49,23 +49,23 @@ Automatically setup Claude Code for rep
     * github
         * claude mcp add-json github '{"type":"http","url":"https://api.githubcopilot.com/mcp","headers":{"Authorization":"Bearer '"$(grep GITHUB_PAT .env | cut -d '=' -f2)"'"}}'
 * skill
-    * 
+    * (added to repo already) repo-setup - Creates CLAUDE.md and skills and other things which gives it constraints to work in. These should be created by teams and changes merged in with a maximum gap of 1 week. That keeps all code aligned with what team wants.
+    * (added to repo already) fix-github-issue - This uses MCP servers to handle github Issues, PR etc. Teams should build this as needed.   
+    * nextjs-validator - typescript NextJS Architect understands visual asthetics and coding best practices and how to handle and fix issues.
+    * fastapi-validator - Python FastAPI Architect understands best practices and how to handle and fix issues.
+    * docker-validator - DevOps Specialist understands best practices for Docker and Orchestration, and how to handle and fix issues.
 * hook
     * validate and generate Pep8 compliant python code using auto-pep8 as file creates
     * validate and generate ES6 compliant typescript code using prettier as file creates
 * agent
-    * PR Review
-    * Python FastAPI Specialist
-    * React NextJS Specialist
-    * Docker and Orchestration Specialist
-* command
-    * /fix-next - Pick next Issue from github and fix it and create a PR
+    * PR and Code Reviewer uses pr-review-toolkit, security-guidance, code-review-graph mcp, github mcp, playwright mcp
+    * Python FastAPI Specialist uses fastapi-validator skill, Pep8 hook, code-review-graph mcp, pr-review-toolkit, security-guidance
+    * React NextJS Specialist    uses nextjs-validator skill and Prettier hook, code-review-graph mcp, pr-review-toolkit, security-guidance, frontend-design
+    * Docker and Orchestration Specialist uses docker-validator skill, github mcp, security-guidance 
 * Directions
     * CLAUDE.md
     * frontend/CLAUDE.md
     * backend/CLAUDE.md
-
-Note: https://www.reddit.com/r/LLMDevs/comments/1rwh2yd/your_claudemd_files_in_subdirectories_might_not/
 
 ### New Project
 I wish to create a themed basic calculator where react nextjs frontend and python fastapi backend run on 2 docker containers on port 3004 and 8004 respectively
@@ -94,21 +94,40 @@ I wish to create a themed basic calculator where react nextjs frontend and pytho
         * Split above instructions into a checklist and validate the code against it. 
 
 ### Extablished Projects
-* Project wide Styke Change
-* Add new features
-    * factorial, squareroot, square
-    * redesign UI in PacMan theme with sound effects 
+* Guided
+    * Convert the Calculator to a Scientific Calculator
+        * Create a Issue in Github
+        * claude -p "Use fix-github-issue skill to fix Issue 10. Follow instructions as given in md files" --model haiku --dangerously-skip-permissions 
+* You should try
+    * Redesign UI in PacMan theme with sound effects - Just ask Claude
+    * Change complete codebase to use variable name in TITLECASE - Change Project setup files and ask Claude to make sure pproject is following them.
 
 ### Continuous improvement
-* Create Issue
-* Raise PR
-* Weekly ensure documentatiion matches code
-* Solve Issues
+We can cover these as well
+* Create Issue - Auto do primary RCA - above example does a basic job
+* Raise PR - PR should be auto reviewed and commented on
+* Weekly ensure documentatiion matches code - team Review and updates
+* Solve Issues - Auto RCA -> Auto fix -> Auto PR -> Auto Review -> Auto Close
+* Keep documentation updated - If there is a drift in code
 
 ## Concluding Remarks
-
 We only covered the frontend and backend but we can add all others we played with in out last post as well.
+Claude in not the only tool you can explore in addition to ones I introduced earlier - Codex CLI, Gemini CLI, Qodo, Windsurf, Cody, Aider, OpenCoder and may others.
+Now imagine a bunch of these working together using all different models and tools - further posts will take you there as well. 
 This is just a small example of what can be done with agents. The possibilities are endless are you ready?
+
+
+## Appendix
+### Usage and time taken on a Claude Code Pro subscription
+0% 52% - Usage at Start
+7m - Setup
+4% 53% - Usage after Setup
+25 m - Application
+12% 54% - Usage after App
+15 m - Enhance to Scientific
+23% 55% - Usage after Enhance
+
+### OpenRouter Free models are slower
 
 
 
