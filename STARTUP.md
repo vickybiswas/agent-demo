@@ -19,6 +19,13 @@ curl http://localhost:3004/           # Frontend
 
 ### Option 2: Local Development (without Docker)
 
+#### Setup Frontend Environment
+```bash
+cd frontend
+cp .env .env.local
+# Edit .env.local to use: NEXT_PUBLIC_API_URL=http://localhost:8004
+```
+
 #### Backend (FastAPI)
 ```bash
 cd backend
@@ -33,7 +40,10 @@ cd frontend
 npm install
 npm run dev
 # Listens on http://localhost:3004
+# Calls backend at http://localhost:8004 (from .env.local)
 ```
+
+**Important:** Frontend needs `.env.local` with `http://localhost:8004` for local development. In Docker, `.env` is used with `http://backend:8004`.
 
 ### Option 3: Automated Startup Script
 
@@ -79,10 +89,24 @@ curl http://localhost:3004/
 - Check npm dependencies: `cd frontend && npm install`
 - Clear cache: `rm -rf frontend/.next`
 
+**Frontend can't reach backend (CORS error)?**
+- **Local Dev**: Ensure `frontend/.env.local` has `NEXT_PUBLIC_API_URL=http://localhost:8004`
+  ```bash
+  # Copy and edit:
+  cp frontend/.env frontend/.env.local
+  # Edit .env.local:
+  NEXT_PUBLIC_API_URL=http://localhost:8004
+  ```
+  Then restart: `npm run dev`
+- **Docker**: Ensure `frontend/.env` has `NEXT_PUBLIC_API_URL=http://backend:8004`
+- Check browser console for error messages
+- Verify backend CORS allows frontend origin: `curl -H "Origin: http://localhost:3004" http://localhost:8004/health`
+
 **Docker Compose failing?**
 - Ensure Docker daemon is running: `docker ps`
 - Check docker-compose.yaml syntax: `docker compose config`
 - Rebuild images: `docker compose build --no-cache`
+- Check environment variables: `docker compose config | grep NEXT_PUBLIC_API_URL`
 
 ## Architecture
 
