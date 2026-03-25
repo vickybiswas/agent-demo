@@ -1,0 +1,51 @@
+{
+  "theme": {
+    "name": "Pac-Man Arcade",
+    "colors": {
+      "pacman": "#FFFF00",
+      "background": "#000033",
+      "wall": "#0033FF",
+      "blinky": "#FF0000",
+      "pinky": "#FFB8FF",
+      "inky": "#00FFFF",
+      "clyde": "#FFB847",
+      "pellet": "#FFB8B8",
+      "powerPellet": "#FFFF99",
+      "text": "#FFFF00",
+      "score": "#00FF00"
+    },
+    "fonts": {
+      "primary": "'Courier New', monospace",
+      "arcade": "'Press Start 2P', cursive"
+    },
+    "animations": {
+      "waka": 200,
+      "powerUp": 400,
+      "ghostFlash": 150,
+      "pelletBounce": 300
+    },
+    "ghosts": [
+      {
+        "name": "Blinky",
+        "color": "#FF0000",
+        "personality": "Aggressive pursuer"
+      },
+      {
+        "name": "Pinky",
+        "color": "#FFB8FF",
+        "personality": "Ambush specialist"
+      },
+      {
+        "name": "Inky",
+        "color": "#00FFFF",
+        "personality": "Unpredictable",
+        "startX": "25%"
+      },
+      {
+        "name": "Clyde",
+        "color": "#FFB847",
+        "personality": "Slow and steady"
+      }
+    ]
+  }
+}
