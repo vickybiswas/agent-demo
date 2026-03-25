@@ -1,0 +1,21 @@
+@import "../styles/variables";
+
+.display {
+  background-color: rgba($secondary-color, 0.2);
+  border: 2px solid $secondary-color;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  box-shadow: 0 0 10px rgba($secondary-color, 0.5);
+
+  p {
+    font-size: 32px;
+    font-weight: bold;
+    color: $neon-color;
+    font-family: $font-primary;
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "theme": {
+    "name": "Stranger Things",
+    "colors": {
+      "primary": "#FF6B6B",
+      "secondary": "#4ECDC4",
+      "background": "#1A1A2E",
+      "text": "#EAEAEA",
+      "neon": "#00D4FF"
+    },
+    "fonts": {
+      "primary": "'Space Mono', monospace",
+      "secondary": "'Roboto Mono', monospace"
+    },
+    "animations": {
+      "duration": 300,
+      "easing": "easeInOut"
+    }
+  }
+}
