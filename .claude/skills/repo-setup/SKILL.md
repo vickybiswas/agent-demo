@@ -401,4 +401,4 @@ All independent → spawn together, not sequentially. Cuts regression testing ti
 - **REGRESSION.md is mandatory** - Every developer must complete it before creating a PR
 
 # Learnings
-2026/03/25 - In docker compose use http://localhost instead of http://service_name (eg. backend) to reach backend from frontend when running in local development. The generated documentation and guides must clearly explain this difference and how to set up environment variables accordingly.
+2026/03/25 - In docker compose use http://localhost instead of http://service_name (eg. backend) to reach backend from frontend when running in local development. The generated documentation and guides must clearly explain this difference and how to set up environment variables accordingly. Add this a a gate for completion before docker compose up is called.
