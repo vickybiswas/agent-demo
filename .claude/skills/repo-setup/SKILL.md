@@ -76,6 +76,7 @@ Auto-formatting on file creation:
 - 3 STEPs to spawn agents in parallel (Frontend + Backend) then sequential (Docker)
 - Quality gates for each domain
 - Dependencies and timing
+- End to End Playwrite based UI testing
 - Reference to REGRESSION.md as pre-PR requirement
 
 **CREATE.md** (Docker-specific guide):
@@ -283,7 +284,7 @@ The skill generates guides with **specific framework focus**:
 
 - **Frontend**: Animations via framer-motion, styling via SCSS, testing via Playwright
 - **Backend**: FastAPI endpoints, pytest for testing, PEP8 for code quality
-- **Docker**: Compose for orchestration, volumes for hot-reload, networking for services
+- **Docker**: Compose for orchestration, volumes for hot-reload, networking for services, End to End automated testing, frontend connected to backend and working together 
 
 Agents follow these frameworks when building, not generic approaches.
 
@@ -398,3 +399,6 @@ All independent → spawn together, not sequentially. Cuts regression testing ti
 - Generated agents are ready to spawn immediately
 - No manual editing needed unless customizing beyond INSTRUCTIONS.md
 - **REGRESSION.md is mandatory** - Every developer must complete it before creating a PR
+
+# Learnings
+2026/03/25 - In docker compose use http://localhost instead of http://service_name (eg. backend) to reach backend from frontend when running in local development. The generated documentation and guides must clearly explain this difference and how to set up environment variables accordingly.
